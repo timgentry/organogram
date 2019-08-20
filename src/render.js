@@ -21,6 +21,20 @@ export default function(svgId, rows) {
       .id(function(d) { return d.reference; })
       .parentId(function(d) { return d.report_to; });
 
+  // Look for orphaned rows
+  var ids = rows.map(function(d){
+    return d.reference;
+  })
+  var unknownParentIds = rows.filter(function(d){
+    return !ids.includes(d.report_to) && d.report_to != ''
+  }).map(function(d){
+    return d.report_to
+  })
+  unknownParentIds = Array.from(new Set(unknownParentIds))
+  if (unknownParentIds.length > 0) {
+    throw new Error("unknown ids: "+ unknownParentIds.join(", "))
+  }
+
   var root = tree(stratify(rows));
   link(g, root, diagonal);
 
