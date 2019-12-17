@@ -1,17 +1,12 @@
-const production = process.env.NODE_ENV === 'production';
 var path = require('path');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-let plugins = [];
-
-if (production) {
-  console.log('NODE_ENV production mode');
-  plugins = plugins.concat([
-    new UglifyJSPlugin()
-  ]);
-}
-
-module.exports = {
+var config = {
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    openPage: 'organogram.html'
+    // watchContentBase: true
+  },
   entry: './src/index.js',
   module: {
     rules: [
@@ -34,5 +29,19 @@ module.exports = {
       './cptable': 'var cptable'
     }
   ],
-  plugins: plugins
+};
+
+module.exports = (env, argv) => {
+
+  if (argv.mode === 'development') {
+    config.devtool = 'source-map';
+  }
+
+  if (argv.mode === 'production') {
+    config.optimization = {
+      minimizer: [ new UglifyJSPlugin() ]
+    }
+  }
+
+  return config;
 };

@@ -4,9 +4,10 @@
   "description": "Displays an organogram using a radial Reingold–Tilford tree",
   "main": "dist/organogram.js",
   "scripts": {
-    "build": "node_modules/.bin/webpack",
-    "watch": "node_modules/.bin/webpack -w",
-    "lint": "node_modules/.bin/eslint src"
+    "lint": "standard",
+    "build": "webpack --mode=production",
+    "start": "webpack-dev-server --open \"Google Chrome\"",
+    "watch": "webpack --watch --mode=development"
   },
   "repository": {
     "type": "git",
@@ -22,18 +23,24 @@
   },
   "homepage": "https://github.com/timgentry/organogram#readme",
   "devDependencies": {
-    "css-loader": "^0.26.1",
-    "eslint": "^3.10.2",
+    "css-loader": "^3.3.2",
     "package-preamble": "0.0.2",
-    "style-loader": "^0.13.1",
-    "uglify-js": "^2.7.5",
-    "uglifyjs-webpack-plugin": "^0.1.2"
+    "standard": "^14.3.1",
+    "style-loader": "^1.0.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
     "d3": "^4.4.4",
     "jspdf-yworks": "^1.2.68",
     "svg2pdf.js": "^1.0.3",
-    "webpack": "^2.2.1",
-    "xlsx": "^0.8.1"
+    "xlsx": "^0.15.3"
+  },
+  "standard": {
+    "ignore": [
+      "/dist/*"
+    ]
   }
 }
