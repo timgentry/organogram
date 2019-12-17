@@ -1,5 +1,4 @@
 var path = require('path')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 var config = {
   devServer: {
@@ -37,9 +36,7 @@ module.exports = (env, argv) => {
   }
 
   if (argv.mode === 'production') {
-    config.optimization = {
-      minimizer: [new UglifyJSPlugin()]
-    }
+    // ...
   }
 
   return config
