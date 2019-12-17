@@ -1,6 +1,6 @@
 /* eslint-env browser */
 import svg2pdf from 'svg2pdf.js'
-import { jsPDF as JSPDF } from 'jspdf-yworks'
+import jsPDF from 'jspdf-yworks'
 import * as d3 from 'd3'
 
 // https://www.gnu.org/software/gv/manual/html_node/Paper-Keywords-and-paper-size-in-points.html
@@ -35,7 +35,7 @@ export function uriPDF (document, id, paper) {
   var maxScale
 
   // create a new jsPDF instance
-  var pdf = new JSPDF('l', 'pt', [paper.width, paper.height])
+  var pdf = new jsPDF('l', 'pt', [paper.width, paper.height])
   if (paper.width / paper.height <= 1) {
     // Portrait or square
     maxScale = maximumScale(svgElement.offsetWidth, svgElement.offsetHeight, paper.width, paper.height)
