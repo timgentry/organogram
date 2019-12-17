@@ -78,6 +78,9 @@
             };
           });
 
+          // filter seemingly empty rows
+          json = json.filter(function(d){ return 'undefined' !== typeof d.reference && 'undefined' !== typeof d.report_to });
+
           // filter the rows to children and the selected root (to avoid multiple roots)
           json = json.filter(function(d){ return d.report_to != '' || d.reference == rootId; });
 
