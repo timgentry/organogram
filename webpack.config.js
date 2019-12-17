@@ -1,12 +1,13 @@
-var path = require('path')
-
 var config = {
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: __dirname + '/dist',
     openPage: 'organogram.html'
     // watchContentBase: true
   },
-  entry: './src/index.js',
+  entry: {
+    organogram: './src/index.js',
+    organogram_3d: './src/index_3d.js'
+  },
   module: {
     rules: [
       {
@@ -16,8 +17,8 @@ var config = {
     ]
   },
   output: {
-    filename: 'organogram.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    path: __dirname + '/dist',
     library: 'organogram'
   },
   node: {
