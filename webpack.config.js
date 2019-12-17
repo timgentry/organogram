@@ -1,5 +1,5 @@
-var path = require('path');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var path = require('path')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 var config = {
   devServer: {
@@ -12,36 +12,35 @@ var config = {
     rules: [
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
   output: {
     filename: 'organogram.js',
     path: path.resolve(__dirname, 'dist'),
-    library: "organogram"
+    library: 'organogram'
   },
   node: {
-    fs: "empty"
+    fs: 'empty'
   },
   externals: [
     {
       './cptable': 'var cptable'
     }
-  ],
-};
+  ]
+}
 
 module.exports = (env, argv) => {
-
   if (argv.mode === 'development') {
-    config.devtool = 'source-map';
+    config.devtool = 'source-map'
   }
 
   if (argv.mode === 'production') {
     config.optimization = {
-      minimizer: [ new UglifyJSPlugin() ]
+      minimizer: [new UglifyJSPlugin()]
     }
   }
 
-  return config;
-};
+  return config
+}
