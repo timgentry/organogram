@@ -25,15 +25,16 @@ export default function (svgId, rows) {
   var ids = rows.map(function (d) {
     return d.reference
   })
-  var unknownParentIds = rows.filter(function (d) {
+  var unknownParents = rows.filter(function (d) {
     return !ids.includes(d.report_to) && d.report_to != ''
   }).map(function (d) {
-    return d.report_to
+    return d.reference
   })
-  unknownParentIds = Array.from(new Set(unknownParentIds))
-  if (unknownParentIds.length > 0) {
-    throw new Error('unknown ids: ' + unknownParentIds.join(', '))
+  if (unknownParents.length !== 1) {
+    throw new Error('Unknown parents for Reference Ids: ' + unknownParents.join(', '))
   }
+  var root_row = rows.find(d => d.reference === unknownParents[0])
+  root_row.report_to = ''
 
   var root = tree(stratify(rows))
   link(g, root, diagonal)

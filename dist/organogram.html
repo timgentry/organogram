@@ -49,8 +49,6 @@
         return "grey";
       };
 
-      var rootId = "5";
-
       d3.select("#version").text("v" + organogram.version);
 
       organogram.prepareDrop(function(json){
@@ -67,7 +65,7 @@
           json = json.map(function(d){
             return {
               reference: d[referenceColumnName],
-              report_to: d[referenceColumnName] == rootId ? '' : d[reportToColumnName],
+              report_to: d[reportToColumnName],
               label: '' + d["Post Title"],
               // label: ('' + d["Employee Name"]).match(/vacant/i) ? "" + d["New ESR"] : d["Preferred First Name"] + " " + d["Last Name"],
               label_colour: ('' + d["Employee Name"]).match(/(vacant|dis-est|frozen|delete)/i) ? "#aaa" : "#333",
@@ -80,9 +78,7 @@
 
           // filter seemingly empty rows
           json = json.filter(function(d){ return 'undefined' !== typeof d.reference && 'undefined' !== typeof d.report_to });
-
-          // filter the rows to children and the selected root (to avoid multiple roots)
-          json = json.filter(function(d){ return d.report_to != '' || d.reference == rootId; });
+          json = json.filter(function(d){ return '' !== d.reference }); //&& '' !== d.report_to
 
           // Reset error message and remove existing SVG
           d3.select("#error").text("");
