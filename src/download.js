@@ -38,7 +38,7 @@ export function uriPDF (document, id, paper) {
   var pdf = new jsPDF('l', 'pt', [paper.width, paper.height])
   if (paper.width / paper.height <= 1) {
     // Portrait or square
-    maxScale = maximumScale(svgElement.offsetWidth, svgElement.offsetHeight, paper.width, paper.height)
+    maxScale = maximumScale(svgElement.width.baseVal.value, svgElement.height.baseVal.value, paper.width, paper.height)
   } else {
     // TODO: Landscape
   }
