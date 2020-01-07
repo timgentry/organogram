@@ -39,8 +39,9 @@
         } else if (grade.match(/^(AA|AFC3)/)) {
           return 7;
         } else {
+          return grade
           // console.log(grade);
-          return -1;
+          // return -1;
         }
       }
 
@@ -81,6 +82,7 @@
                          .text('Organigramize').style('display', 'inline-block')
 
           criteria.map(function(d){
+            // columns.unshift(`No ${d} Column`)
             var div = contdiv.append('div').style('display', 'inline-block').attr('id', 'buttonsect')
             var label = div.append("label").attr('for', d).text(d)
             var select = div.append("select").attr('id', d)
