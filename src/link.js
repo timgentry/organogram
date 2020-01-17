@@ -7,7 +7,7 @@ export default function (g, root, diagonal) {
     .attr('class', 'link')
     .attr('fill', 'none')
     .attr('stroke', function (d) {
-      if (d.parent.data.grade_index > d.data.grade_index) {
+      if (parseInt(d.parent.data.grade_index) < parseInt(d.data.grade_index)) {
         return 'red'
       } else {
         return '#ccc'

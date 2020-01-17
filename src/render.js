@@ -8,7 +8,7 @@ import { diagonal } from './diagonal'
 export default function (svgId, rows) {
   var width = paperSizes.a2.width
   var height = paperSizes.a2.height
-  var radius = d3.min([width, height]) / 2 - 100
+  var radius = d3.min([width, height]) / 2 + 300
 
   var tree = d3.tree()
     .size([360, radius])
@@ -31,12 +31,19 @@ export default function (svgId, rows) {
     return d.reference
   })
   if (unknownParents.length !== 1) {
-    throw new Error('Unknown parents for Reference Ids: ' + unknownParents.join(', '))
+    var lost_people = []
+    unknownParents.forEach(function(d, i){
+      console.log(d);
+      var row_index = rows.findIndex(r => r.reference == d)
+      console.log(row_index);
+      rows[row_index]["report_to"] = "Unkown Manager"
+    })
   }
-  var root_row = rows.find(d => d.reference === unknownParents[0])
-  root_row.report_to = ''
-
+  var root_row = rows.findIndex(d => d.reference === "Wilkinson, Ms. Sarah Fay")
+  rows[root_row]["report_to"] = ''
+  debugger
   var root = tree(stratify(rows))
+
   link(g, root, diagonal)
 
   var node = g.selectAll('.node')
@@ -57,6 +64,7 @@ export default function (svgId, rows) {
       if (d.data.label === 'Dis-est.') return '#ccc'
       return d.data.colour
     })
+    .attr('stroke', 'white')
 
   node.append('text')
     .attr('dy', '.31em')
@@ -65,8 +73,7 @@ export default function (svgId, rows) {
     .style('fill', function (d) {
       return d.data.label_colour || '#333'
     })
-
-    .attr('font-size', '6px')
+    .attr('font-size', '4px')
     .attr('font-family', 'sans-serif')
     .text(function (d) {
       return d.data.label

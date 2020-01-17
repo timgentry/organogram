@@ -33,11 +33,11 @@ export function bestFit (boundingBox, width, height) {
 export function uriPDF (document, id, paper) {
   var svgElement = document.getElementById(id)
   var maxScale
-
   // create a new jsPDF instance
   var pdf = new jsPDF('l', 'pt', [paper.width, paper.height])
   if (paper.width / paper.height <= 1) {
     // Portrait or square
+    debugger
     maxScale = maximumScale(svgElement.width.baseVal.value, svgElement.height.baseVal.value, paper.width, paper.height)
   } else {
     // TODO: Landscape
@@ -69,9 +69,12 @@ export function uriSVG (document, id) {
   return URL.createObjectURL(svgBlob)
 }
 
-export function downloadPDF (document, svgId, linkId) {
+export function downloadPDF (document, svgId, linkId, paperId) {
   var a = document.getElementById(linkId)
-  a.href = uriPDF(document, svgId, paperSizes.a4)
+  var paper_size = document.getElementById(paperId)
+  var selected = paper_size.options[paper_size.selectedIndex].value
+  paper_size.style.display = 'inline-block'
+  a.href = uriPDF(document, svgId, paperSizes[selected])
   a.download = 'organogram.pdf'
   a.style.display = 'inline-block'
 }

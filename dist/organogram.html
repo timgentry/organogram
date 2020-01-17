@@ -15,6 +15,15 @@
       <div id="error" style="color:red"></div>
       <a id="downloadsvg" class="button" href="#" style="display:none;">Download SVG</a>
       <a id="downloadpdf" class="button button-primary" href="#" style="display:none;">Download PDF</a>
+      <select id="papersize" style="display:none;">
+        <option value="letter">letter</option>
+        <option value="a0">a0</option>
+        <option value="a1">a1</option>
+        <option value="a2">a2</option>
+        <option value="a3">a3</option>
+        <option value="a4">a4</option>
+        <option value="a5">a5</option>
+      </select>
     </div>
 
     <script type="text/javascript">
@@ -44,11 +53,19 @@
           // return -1;
         }
       }
+      // var colour = function colour(i) {
+      //   if (i >= 0) return d3.schemeSet1[i];
+      //   return "grey";
+      // };
 
-      var colour = function colour(i) {
-        if (i >= 0) return d3.schemeSet1[i];
-        return "grey";
-      };
+      // function colour(i) {
+      //   debugger
+      //   // if (i.match(/\d/) >= 0) {
+      //   //   return d3.schemeCategory10[i.match(/\d/)]
+      //   // } else {
+      //   //   return "grey"
+      //   // }
+      // }
 
       d3.select("#version").text("v" + organogram.version);
 
@@ -70,6 +87,16 @@
 
       organogram.prepareDrop(function(json){
         try {
+          // json.forEach(function(d, i){
+          //   json[i]['Reference'] = i
+          //   var manager = json[i]['Manager']
+          //   debugger
+          //   // if json.findIndex(f => f['Employee Name'] == manager) == 1
+          //   //   json[i]['Reports to'] = 0
+          //   // else
+          //   json[i]['Reports to'] = json.findIndex(f => f['Employee Name'] == manager)
+          // })
+
           d3.selectAll('#buttonsect').remove()
           d3.selectAll('#organigramize').remove()
 
@@ -100,9 +127,30 @@
                 labelColumnName = find_selected('#Label')[0]
             // var payGrade = 'Bugeted Pay Grade',
             //     referenceColumnName = 'Reference',
-            //     reportToColumnName = 'Report to',
+            // var reportToColumnName = 'Manager'
             //     wteColumnName = 'Budgeted WTE',
             //     labelColumnName = 'Employee Name'
+            var colour = d3.scaleOrdinal()
+                          .domain(json.map(d=>d[payGrade]))
+                          .range(d3.schemeCategory20);
+
+            function colours(i){
+              return colour(i)
+            }
+            // would find the root node, so reportToColumnName could be universal
+            // but the data quality is so poor that there are 7 people
+            // with no manager whatsoever
+
+            // var root_node = json.filter(d => d.Manager === undefined)
+            if( !json.map(d => d[referenceColumnName]).includes('Unkown Manager') ){
+              one_more = json.length
+              json[one_more] = {}
+              json[one_more][referenceColumnName] = "Unkown Manager"
+              json[one_more][reportToColumnName] = "Wilkinson, Ms. Sarah Fay"
+              json[one_more][payGrade] = "Band 11"
+              json[one_more][wteColumnName] = 1
+            }
+
 
             json = json.map(function(d){
               return {
@@ -113,14 +161,15 @@
                 label_colour: ('' + d["Employee Name"]).match(/(vacant|dis-est|frozen|delete)/i) ? "#aaa" : "#333",
                 pay_grade: d[payGrade],
                 grade_index: gradeIndex(d[payGrade]),
-                colour: colour(gradeIndex(d[payGrade])),
+                colour: colours(d[payGrade]),
                 wte: +d[wteColumnName],
               };
             });
 
             // filter seemingly empty rows
-            json = json.filter(function(d){ return 'undefined' !== typeof d.reference && 'undefined' !== typeof d.report_to });
-            json = json.filter(function(d){ return '' !== d.reference }); //&& '' !== d.report_to
+            // json = json.filter(function(d){ return 'undefined' !== typeof d.reference && 'undefined' !== typeof d.report_to });
+            // json = json.filter(function(d){ return '' !== d.reference }); //&& '' !== d.report_to
+            debugger
 
             // Reset error message and remove existing SVG
             d3.select("#error").text("");
@@ -128,8 +177,9 @@
 
             organogram.render("organogram", json);
             d3.select("#intro").remove();
+
             organogram.downloadSVG(document, "organogram", "downloadsvg");
-            organogram.downloadPDF(document, "organogram", "downloadpdf");
+            organogram.downloadPDF(document, "organogram", "downloadpdf", "papersize");
             json = stored_json
           })
         }
