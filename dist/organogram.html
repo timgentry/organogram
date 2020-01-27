@@ -20,23 +20,23 @@
     <script type="text/javascript">
       var gradeIndex = function(grade) {
         grade = '' + grade;
-        if (grade.match(/^(SCS1|AFC8D)/)) {
+        if (grade.match(/^(SCS1|(AFC|Band )8D)/)) {
           return -1;
-        } else if (grade.match(/^(G6|Grade 6|AFC8C)/)) {
+        } else if (grade.match(/^(G6|Grade 6|(AFC|Band )8C)/)) {
           return 0;
-        } else if (grade.match(/^(G7U|Grade 7 Upper|AFC8B)/)) {
+        } else if (grade.match(/^(G7U|Grade 7 Upper|(AFC|Band )8B)/)) {
           return 1;
-        } else if (grade.match(/^(G7|Grade 7|AFC8A)/)) {
+        } else if (grade.match(/^(G7|Grade 7|(AFC|Band )8A)/)) {
           return 2;
-        } else if (grade.match(/^(SEO|AFC7)/)) {
+        } else if (grade.match(/^(SEO|(AFC|Band )7)/)) {
           return 3;
-        } else if (grade.match(/^(HEO|AFC6|DQ00)/)) {
+        } else if (grade.match(/^(HEO|(AFC|Band )6|DQ00)/)) {
           return 4;
-        } else if (grade.match(/^(EO|AFC5)/)) {
+        } else if (grade.match(/^(EO|(AFC|Band )5)/)) {
           return 5;
-        } else if (grade.match(/^(AO|AFC4)/)) {
+        } else if (grade.match(/^(AO|(AFC|Band )4)/)) {
           return 6;
-        } else if (grade.match(/^(AA|AFC3)/)) {
+        } else if (grade.match(/^(AA|(AFC|Band )3)/)) {
           return 7;
         } else {
           // console.log(grade);
