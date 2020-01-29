@@ -12,9 +12,42 @@
     <div class="container">
       <h1>Organogram Generator<span style="font-size:25%;color:#ccc" id="version"></span></h1>
       <div id="intro" class="u-full-width">Drop your XLSX spreadsheet anywhere over this browser window&hellip;</div>
+
+      <div class="dropped" style="display:none;">
+        <div class="row">
+          <div class="four columns">
+            <label for="referenceColumnName">Reference</label>
+            <select class="u-full-width" id="referenceColumnName"></select>
+          </div>
+          <div class="four columns">
+            <label for="reportToColumnName">Reports To</label>
+            <select class="u-full-width" id="reportToColumnName"></select>
+          </div>
+          <div class="four columns">
+            <label for="labelColumnName">Label</label>
+            <select class="u-full-width" id="labelColumnName"></select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="four columns">
+            <label for="payGradeColumnName">Pay Grade</label>
+            <select class="u-full-width" id="payGradeColumnName"></select>
+          </div>
+          <div class="four columns">
+            <label for="wteColumnName">Size</label>
+            <select class="u-full-width" id="wteColumnName"></select>
+          </div>
+          <div class="four columns">
+            <label>&nbsp;</label>
+            <input id="organigramize" class="button-primary u-full-width" type="submit" value="Generate">
+          </div>
+        </div>
+      </div>
+
       <div id="error" style="color:red"></div>
       <a id="downloadsvg" class="button" href="#" style="display:none;">Download SVG</a>
-      <a id="downloadpdf" class="button button-primary" href="#" style="display:none;">Download PDF</a>
+      <a id="downloadpdf" class="button" href="#" style="display:none;">Download PDF</a>
       <select id="papersize" style="display:none;">
         <option value="a5">A5</option>
         <option value="letter">letter</option>
@@ -60,24 +93,26 @@
 
       d3.select('#version').text('v' + organogram.version)
 
-      organogram.prepareDrop(function (json) {
-        try {
-          var referenceColumnName = 'Reference'
-          var reportToColumnName = 'Report to'
-          var wteColumnName = 'Budgeted WTE'
-          var payGrade = 'Actual Pay Grade/Scale'
-          // payGrade = "Budgeted Pay Grade"
-          // referenceColumnName = "Post Unique Reference";
-          // reportToColumnName = "Reports to Senior Post";
-          // wteColumnName = "FTE";
+      function selectedValue (id) {
+        var element = document.getElementById(id)
 
-          json = json.map(function (d) {
+        return element.options[element.selectedIndex].value
+      }
+
+      function generateOrganogram (datum, _i, _nodes) {
+        try {
+          var payGrade = selectedValue('payGradeColumnName')
+          var referenceColumnName = selectedValue('referenceColumnName')
+          var reportToColumnName = selectedValue('reportToColumnName')
+          var wteColumnName = selectedValue('wteColumnName')
+          var labelColumnName = selectedValue('labelColumnName')
+
+          var json = datum.map(function (d) {
             return {
               reference: d[referenceColumnName],
               report_to: d[reportToColumnName],
-              label: '' + d['Post Title'],
-              // label: ('' + d["Employee Name"]).match(/vacant/i) ? "" + d["New ESR"] : d["Preferred First Name"] + " " + d["Last Name"],
-              label_colour: ('' + d['Employee Name']).match(/(vacant|dis-est|frozen|delete)/i) ? '#aaa' : '#333',
+              label: d[labelColumnName],
+              label_colour: ('' + d[labelColumnName]).match(/(vacant|dis-est|frozen|delete)/i) ? '#aaa' : '#333',
               pay_grade: d[payGrade],
               grade_index: gradeIndex(d[payGrade]),
               colour: colour(gradeIndex(d[payGrade])),
@@ -94,12 +129,28 @@
           d3.select('#organogram').remove()
 
           organogram.render('organogram', json)
-          d3.select('#intro').remove()
           organogram.downloadSVG(document, 'organogram', 'downloadsvg')
           organogram.downloadPDF(document, 'organogram', 'downloadpdf', 'papersize')
         } catch (err) {
           d3.select('#error').text('Generator failed with the message: ' + err.message)
         }
+      }
+
+      organogram.prepareDrop(function (json) {
+        var selectBoxIds = ['referenceColumnName', 'reportToColumnName', 'labelColumnName', 'payGradeColumnName', 'wteColumnName']
+        var columns = Object.keys(json[0])
+
+        selectBoxIds.map(function (d) {
+          d3.select(`#${d}`).selectAll('options')
+            .data(columns)
+            .enter()
+            .append('option')
+            .attr('value', d => d).text(d => d)
+        })
+
+        d3.select('#organigramize').datum(json).on('click', generateOrganogram)
+        d3.selectAll('.dropped').style('display', 'block')
+        d3.select('#intro').style('display', 'none')
       })
     </script>
   </body>
