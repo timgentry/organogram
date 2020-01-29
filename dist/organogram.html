@@ -15,6 +15,15 @@
       <div id="error" style="color:red"></div>
       <a id="downloadsvg" class="button" href="#" style="display:none;">Download SVG</a>
       <a id="downloadpdf" class="button button-primary" href="#" style="display:none;">Download PDF</a>
+      <select id="papersize" style="display:none;">
+        <option value="a5">A5</option>
+        <option value="letter">letter</option>
+        <option value="a4" selected>A4</option>
+        <option value="a3">A3</option>
+        <option value="a2">A2</option>
+        <option value="a1">A1</option>
+        <option value="a0">A0</option>
+      </select>
     </div>
 
     <script type="text/javascript">
@@ -87,7 +96,7 @@
           organogram.render("organogram", json);
           d3.select("#intro").remove();
           organogram.downloadSVG(document, "organogram", "downloadsvg");
-          organogram.downloadPDF(document, "organogram", "downloadpdf");
+          organogram.downloadPDF(document, "organogram", "downloadpdf", "papersize");
         }
         catch(err) {
           d3.select("#error").text("Generator failed with the message: " + err.message)

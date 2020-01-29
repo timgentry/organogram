@@ -69,11 +69,28 @@ export function uriSVG (document, id) {
   return URL.createObjectURL(svgBlob)
 }
 
-export function downloadPDF (document, svgId, linkId) {
-  var a = document.getElementById(linkId)
-  a.href = uriPDF(document, svgId, paperSizes.a4)
-  a.download = 'organogram.pdf'
-  a.style.display = 'inline-block'
+export function downloadPDF (document, svgId, linkId, paperId) {
+  var $downloadLink = document.getElementById(linkId)
+  var $paperSizeSelect = document.getElementById(paperId)
+
+  var setPdfHrefFromSelection = function (element) {
+    var paperSize = element.options[element.selectedIndex].value
+
+    $downloadLink.href = uriPDF(document, svgId, paperSizes[paperSize])
+    $downloadLink.download = `organogram_${paperSize}.pdf`
+  }
+
+  var paperSizeChanged = function(event) {
+    event.preventDefault()
+
+    setPdfHrefFromSelection(event.currentTarget)
+  }
+
+  $paperSizeSelect.addEventListener('change', paperSizeChanged, false)
+  setPdfHrefFromSelection($paperSizeSelect)
+
+  $downloadLink.style.display = 'inline-block'
+  $paperSizeSelect.style.display = 'inline-block'
 }
 
 export function downloadSVG (document, svgId, linkId) {
