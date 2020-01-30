@@ -1,3 +1,4 @@
+/* global FileReader */
 import * as d3 from 'd3'
 import XLSX from 'xlsx'
 
@@ -13,7 +14,26 @@ var xlsxFirstSheetToJSON = function (data) {
   return XLSX.utils.sheet_to_json(worksheet)
 }
 
-export default function (cb) {
+var processFile = function (file, callback) {
+  var reader = new FileReader()
+  // var name = file.name;
+  var nameParts = file.name.split('.')
+  var extension = nameParts[nameParts.length - 1]
+
+  if (extension === 'xlsx') {
+    reader.onload = function (e) {
+      var data = e.target.result
+      var json = xlsxFirstSheetToJSON(data)
+
+      callback(json)
+    }
+    reader.readAsBinaryString(file)
+  } else {
+    // Not an XLSX spreadsheet
+  }
+}
+
+export default function (callback) {
   if (window.FileReader && window.addEventListener) {
     window.addEventListener('load', function () {
       function cancel () {
@@ -28,24 +48,9 @@ export default function (cb) {
         e.preventDefault()
 
         var files = e.dataTransfer.files
-        var i, f
-        for (i = 0, f = files[i]; i !== files.length; ++i) {
-          var reader = new FileReader()
-          // var name = f.name;
-          var nameParts = f.name.split('.')
-          var extension = nameParts[nameParts.length - 1]
-
-          if (extension === 'xlsx') {
-            reader.onload = function (e) {
-              var data = e.target.result
-              var json = xlsxFirstSheetToJSON(data)
-
-              cb(json)
-            }
-            reader.readAsBinaryString(f)
-          } else {
-            // Not an XLSX spreadsheet
-          }
+        var i, file
+        for (i = 0, file = files[i]; i !== files.length; ++i) {
+          processFile(file, callback)
         }
       }
 
@@ -56,6 +61,6 @@ export default function (cb) {
         .on('drop', onDrop)
     }, false)
   } else {
-    throw 'Your browser does not support modern HTML5 features.'
+    throw new Error('Your browser does not support modern HTML5 features.')
   }
 }
