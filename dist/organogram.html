@@ -132,7 +132,7 @@
           organogram.downloadSVG(document, 'organogram', 'downloadsvg')
           organogram.downloadPDF(document, 'organogram', 'downloadpdf', 'papersize')
         } catch (err) {
-          d3.select('#error').text('Generator failed with the message: ' + err.message)
+          d3.select('#error').text('Error: ' + err.message)
         }
       }
 
