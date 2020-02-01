@@ -16,7 +16,7 @@
       <div class="dropped" style="display:none;">
         <div class="row">
           <div class="four columns">
-            <label for="referenceColumnName">Reference</label>
+            <label for="referenceColumnName">Reference (uniqueness)</label>
             <select class="u-full-width" id="referenceColumnName"></select>
           </div>
           <div class="four columns">
@@ -137,8 +137,15 @@
       }
 
       organogram.prepareDrop(function (json) {
-        var selectBoxIds = ['referenceColumnName', 'reportToColumnName', 'labelColumnName', 'payGradeColumnName', 'wteColumnName']
+        var selectBoxIds = ['reportToColumnName', 'labelColumnName', 'payGradeColumnName', 'wteColumnName']
         var columns = Object.keys(json[0])
+        var columnUniquenessArray = organogram.columnUniquenessArray(json)
+
+        d3.select(`#referenceColumnName`).selectAll('options')
+          .data(organogram.referenceColumnUniqueness(columnUniquenessArray))
+          .enter()
+          .append('option')
+          .attr('value', d => d[0]).text(d => `${d[0]} (${(100.0 * d[1] / d[2]).toFixed(1)}%)`)
 
         selectBoxIds.map(function (d) {
           d3.select(`#${d}`).selectAll('options')

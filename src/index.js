@@ -21,3 +21,8 @@ export {
   downloadSVG,
   uriPDF
 } from './download'
+
+export {
+  columnUniquenessArray,
+  referenceColumnUniqueness
+} from './utils'

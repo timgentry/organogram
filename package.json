@@ -34,6 +34,7 @@
   "dependencies": {
     "d3": "^4.4.4",
     "jspdf-yworks": "^1.2.68",
+    "lodash": "^4.17.15",
     "svg2pdf.js": "^1.0.3",
     "xlsx": "^0.15.3"
   },
