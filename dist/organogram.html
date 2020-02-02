@@ -121,8 +121,8 @@
           })
 
           // filter seemingly empty rows
-          json = json.filter(function (d) { return typeof d.reference !== 'undefined' && typeof d.report_to !== 'undefined' })
-          json = json.filter(function (d) { return d.reference !== '' }) // && '' !== d.report_to
+          json = json.filter(function (d) { return typeof d.reference !== 'undefined' && d.reference !== '' })
+          // json = json.filter(function (d) { return typeof d.report_to !== 'undefined' }) // && '' !== d.report_to
 
           // Reset error message and remove existing SVG
           d3.select('#error').text('')
