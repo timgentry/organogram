@@ -5,6 +5,34 @@ import svgRenderer from './svg'
 import link from './link'
 import { diagonal } from './diagonal'
 
+var appendNodeCircle = function (node) {
+  node.append('circle')
+    .attr('r', function (d) {
+      if (isNaN(d.data.wte) || d.data.wte === 0) return 0
+      var radius = 3 * Math.sqrt(d.data.wte)
+      return radius
+    })
+    .attr('fill', function (d) {
+      if (d.data.label === 'Dis-est.') return '#ccc'
+      return d.data.colour
+    })
+}
+
+var appendNodeLabel = function (node) {
+  node.append('text')
+    .attr('dy', '.31em')
+    .attr('text-anchor', function (d) { return d.x < 180 ? 'start' : 'end' })
+    .attr('transform', function (d) { return d.x < 180 ? 'translate(6)' : 'rotate(180)translate(-6)' })
+    .style('fill', function (d) {
+      return d.data.label_colour || '#333'
+    })
+    .attr('font-size', '6px')
+    .attr('font-family', 'sans-serif')
+    .text(function (d) {
+      return d.data.label
+    })
+}
+
 export default function (svgId, rows) {
   var width = paperSizes.a2.width
   var height = paperSizes.a2.height
@@ -47,30 +75,8 @@ export default function (svgId, rows) {
       return 'rotate(' + (d.x - 90) + ')translate(' + d.y + ')'
     })
 
-  node.append('circle')
-    .attr('r', function (d) {
-      if (isNaN(d.data.wte) || d.data.wte === 0) return 0
-      var radius = 3 * Math.sqrt(d.data.wte)
-      return radius
-    })
-    .attr('fill', function (d) {
-      if (d.data.label === 'Dis-est.') return '#ccc'
-      return d.data.colour
-    })
-
-  node.append('text')
-    .attr('dy', '.31em')
-    .attr('text-anchor', function (d) { return d.x < 180 ? 'start' : 'end' })
-    .attr('transform', function (d) { return d.x < 180 ? 'translate(6)' : 'rotate(180)translate(-6)' })
-    .style('fill', function (d) {
-      return d.data.label_colour || '#333'
-    })
-
-    .attr('font-size', '6px')
-    .attr('font-family', 'sans-serif')
-    .text(function (d) {
-      return d.data.label
-    })
+  appendNodeCircle(node)
+  appendNodeLabel(node)
 
   var boundingRect = g.node().getBoundingClientRect()
   var best_fit = bestFit(boundingRect, width, height)
