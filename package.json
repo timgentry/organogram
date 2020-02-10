@@ -32,7 +32,7 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "d3": "^4.4.4",
+    "d3": "^5.15.0",
     "jspdf-yworks": "^1.2.68",
     "lodash": "^4.17.15",
     "svg2pdf.js": "^1.0.3",
