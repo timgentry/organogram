@@ -20,8 +20,8 @@
             <select class="u-full-width" id="referenceColumnName"></select>
           </div>
           <div class="four columns">
-            <label for="reportToColumnName">Reports To</label>
-            <select class="u-full-width" id="reportToColumnName"></select>
+            <label for="reportToColumnName">Reports To (commonality)</label>
+            <select class="u-full-width" id="reportToColumnName"><optgroup></optgroup></select>
           </div>
           <div class="four columns">
             <label for="labelColumnName">Label</label>
@@ -99,6 +99,22 @@
         return element.options[element.selectedIndex].value
       }
 
+      function changedReference(_datum, _i, _nodes) {
+        var value = this.options[this.selectedIndex].value
+        var data = d3.select('#organigramize').datum()
+
+        d3.select('#reportToColumnName').select('optgroup').remove()
+        d3.select('#reportToColumnName').append('optgroup')
+
+        options = d3.select('#reportToColumnName').select('optgroup').selectAll('option')
+          .sort((a,b) => (b[1] / b[2]) - (a[1] / a[2]))
+          .data(organogram.reportsToColumnCommonality(organogram.columnCommonalityArray(value, data)))
+        options.enter()
+          .append('option')
+          .attr('value', d => d[0])
+          .text(d => `${d[0]} (${(100.0 * d[1] / d[2]).toFixed(1)}%)`)
+      }
+
       function generateOrganogram (datum, _i, _nodes) {
         try {
           var payGrade = selectedValue('payGradeColumnName')
@@ -137,18 +153,18 @@
       }
 
       organogram.prepareDrop(function (json) {
-        var selectBoxIds = ['reportToColumnName', 'labelColumnName', 'payGradeColumnName', 'wteColumnName']
+        var selectBoxIds = ['labelColumnName', 'payGradeColumnName', 'wteColumnName']
         var columns = Object.keys(json[0])
         var columnUniquenessArray = organogram.columnUniquenessArray(json)
 
-        d3.select(`#referenceColumnName`).selectAll('options')
+        d3.select(`#referenceColumnName`).selectAll('option')
           .data(organogram.referenceColumnUniqueness(columnUniquenessArray))
           .enter()
           .append('option')
           .attr('value', d => d[0]).text(d => `${d[0]} (${(100.0 * d[1] / d[2]).toFixed(1)}%)`)
 
         selectBoxIds.map(function (d) {
-          d3.select(`#${d}`).selectAll('options')
+          d3.select(`#${d}`).selectAll('option')
             .data(columns)
             .enter()
             .append('option')
@@ -156,6 +172,7 @@
         })
 
         d3.select('#organigramize').datum(json).on('click', generateOrganogram)
+        d3.select('#referenceColumnName').on('change', changedReference).each(changedReference)
         d3.selectAll('.dropped').style('display', 'block')
         d3.select('#intro').style('display', 'none')
       })

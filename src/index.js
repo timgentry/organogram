@@ -23,6 +23,8 @@ export {
 } from './download'
 
 export {
+  columnCommonalityArray,
   columnUniquenessArray,
-  referenceColumnUniqueness
+  referenceColumnUniqueness,
+  reportsToColumnCommonality
 } from './utils'
