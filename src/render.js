@@ -31,8 +31,6 @@ var appendNodeLabel = function (node) {
     .style('fill', function (d) {
       return d.data.label_colour || '#333'
     })
-    .attr('font-size', '6px')
-    .attr('font-family', 'sans-serif')
     .text(function (d) {
       return d.data.label
     })

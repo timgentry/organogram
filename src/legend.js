@@ -5,10 +5,7 @@ export function appendColourLegend (svg, values, scale, text) {
     .attr('dy', '.31em')
     .attr('text-anchor', 'start')
     .attr('transform', 'translate(-3)')
-    .style('fill', 'black')
-    .attr('font-size', '8px')
     .attr('font-weight', 'bold')
-    .attr('font-family', 'sans-serif')
     .text(text)
 
   var node = g.selectAll('.label')
@@ -31,8 +28,6 @@ export function appendColourLegend (svg, values, scale, text) {
     .style('fill', function (d) {
       return typeof d !== 'undefined' ? 'black' : '#999'
     })
-    .attr('font-size', '8px')
-    .attr('font-family', 'sans-serif')
     .text(function (d) {
       return typeof d !== 'undefined' ? d : 'Blank'
     })
@@ -49,10 +44,7 @@ export function appendWteLegend (svg, scale, text) {
     .attr('dy', '.31em')
     .attr('text-anchor', 'end')
     .attr('transform', 'translate(3)')
-    .style('fill', 'black')
-    .attr('font-size', '8px')
     .attr('font-weight', 'bold')
-    .attr('font-family', 'sans-serif')
     .text(text)
 
   var node = g.selectAll('.label')
@@ -72,9 +64,6 @@ export function appendWteLegend (svg, scale, text) {
     .attr('dy', '.31em')
     .attr('text-anchor', 'end')
     .attr('transform', 'translate(-6)')
-    .style('fill', 'black')
-    .attr('font-size', '8px')
-    .attr('font-family', 'sans-serif')
     .text(function (d, i) {
       return d
     })
