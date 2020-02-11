@@ -1,7 +1,6 @@
 <html>
   <head>
     <script src="organogram.js"></script>
-    <script src="d3-scale-chromatic.min.js"></script>
     <style type="text/css" media="screen">
       svg {
         border: 1px dashed grey;
@@ -31,11 +30,11 @@
 
         <div class="row">
           <div class="four columns">
-            <label for="payGradeColumnName">Pay Grade</label>
+            <label for="payGradeColumnName">Colour (typ. Pay Grade)</label>
             <select class="u-full-width" id="payGradeColumnName"></select>
           </div>
           <div class="four columns">
-            <label for="wteColumnName">Size</label>
+            <label for="wteColumnName">Size (typ. WTE)</label>
             <select class="u-full-width" id="wteColumnName"></select>
           </div>
           <div class="four columns">
@@ -117,7 +116,7 @@
 
       function generateOrganogram (datum, _i, _nodes) {
         try {
-          var payGrade = selectedValue('payGradeColumnName')
+          var payGradeColumnName = selectedValue('payGradeColumnName')
           var referenceColumnName = selectedValue('referenceColumnName')
           var reportToColumnName = selectedValue('reportToColumnName')
           var wteColumnName = selectedValue('wteColumnName')
@@ -129,10 +128,10 @@
               report_to: d[reportToColumnName],
               label: d[labelColumnName],
               label_colour: ('' + d[labelColumnName]).match(/(vacant|dis-est|frozen|delete)/i) ? '#aaa' : '#333',
-              pay_grade: d[payGrade],
-              grade_index: gradeIndex(d[payGrade]),
-              colour: colour(gradeIndex(d[payGrade])),
-              wte: +d[wteColumnName]
+              pay_grade: d[payGradeColumnName],
+              grade_index: gradeIndex(d[payGradeColumnName]),
+              colour: colour(gradeIndex(d[payGradeColumnName])),
+              wte: isNaN(+d[wteColumnName]) ? 0 : +d[wteColumnName]
             }
           })
 
@@ -144,7 +143,7 @@
           d3.select('#error').text('')
           d3.select('#organogram').remove()
 
-          organogram.render('organogram', json)
+          organogram.render('organogram', json, payGradeColumnName, wteColumnName)
           organogram.downloadSVG(document, 'organogram', 'downloadsvg')
           organogram.downloadPDF(document, 'organogram', 'downloadpdf', 'papersize')
         } catch (err) {

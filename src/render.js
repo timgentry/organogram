@@ -1,20 +1,25 @@
 import * as d3 from 'd3'
+import { schemeCategory10 } from 'd3-scale-chromatic'
 
 import { bestFit, paperSizes } from './download'
 import svgRenderer from './svg'
 import link from './link'
 import { diagonal } from './diagonal'
+import { appendLegend } from './legend'
 
-var appendNodeCircle = function (node) {
+var appendNodeCircle = function (node, colourScale, sizeScale) {
   node.append('circle')
     .attr('r', function (d) {
-      if (isNaN(d.data.wte) || d.data.wte === 0) return 0
-      var radius = 3 * Math.sqrt(d.data.wte)
-      return radius
+      // if (isNaN(d.data.wte) || d.data.wte === 0) return 0
+      // var radius = 3 * Math.sqrt(d.data.wte)
+      // return radius
+      return sizeScale(d.data.wte)
     })
     .attr('fill', function (d) {
-      if (d.data.label === 'Dis-est.') return '#ccc'
-      return d.data.colour
+      // if (d.data.label === 'Dis-est.') return '#ccc'
+      // return d.data.colour
+      // console.log(d.pay_grade)
+      return colourScale(d.data.pay_grade)
     })
 }
 
@@ -33,7 +38,7 @@ var appendNodeLabel = function (node) {
     })
 }
 
-export default function (svgId, rows) {
+export default function (svgId, rows, payGradeColumnName, wteColumnName) {
   var width = paperSizes.a2.width
   var height = paperSizes.a2.height
   var radius = d3.min([width, height]) / 2 - 100
@@ -44,6 +49,20 @@ export default function (svgId, rows) {
 
   var svg = svgRenderer(svgId, width, height)
   var g = svg.append('g').attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')')
+
+  var payGradeValues = Array.from(new Set(rows.map(function (d) { return d.pay_grade })))
+    .sort((a,b) => a.localeCompare(b))
+  var payGradeScale = d3.scaleOrdinal()
+    .domain(payGradeValues)
+    // .range([0, 1])
+    .range(schemeCategory10)
+
+  var wteValues = rows.map(d => d.wte)
+  var wteScale = d3.scaleSqrt()
+    .domain([0, d3.max(wteValues)])
+    .range([0, 3])
+
+  appendLegend(svg, payGradeValues, payGradeScale, payGradeColumnName, wteScale, wteColumnName)
 
   var stratify = d3.stratify()
     .id(function (d) { return d.reference })
@@ -75,7 +94,7 @@ export default function (svgId, rows) {
       return 'rotate(' + (d.x - 90) + ')translate(' + d.y + ')'
     })
 
-  appendNodeCircle(node)
+  appendNodeCircle(node, payGradeScale, wteScale)
   appendNodeLabel(node)
 
   var boundingRect = g.node().getBoundingClientRect()
