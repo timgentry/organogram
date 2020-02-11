@@ -25,7 +25,7 @@ var config = {
   },
   externals: [
     {
-      './cptable': 'var cptable'
+      xlsx: 'XLSX'
     }
   ]
 }
