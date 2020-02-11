@@ -49,7 +49,7 @@ export default function (svgId, rows, payGradeColumnName, wteColumnName) {
   var g = svg.append('g').attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')')
 
   var payGradeValues = Array.from(new Set(rows.map(function (d) { return d.pay_grade })))
-    .sort((a,b) => a.localeCompare(b))
+    .sort((a,b) => (typeof a === 'string') ? a.localeCompare(b) : a - b)
   var payGradeScale = d3.scaleOrdinal()
     .domain(payGradeValues)
     // .range([0, 1])
