@@ -1,3 +1,14 @@
+var bindLegends = function (g, data) {
+  return g.selectAll('.legend')
+    .data(data)
+    .enter()
+    .append('g')
+    .attr('class', 'legend')
+    .attr('transform', function (d, i) {
+      return 'translate(0,' + ((i + 1) * 10) + ')'
+    })
+}
+
 export function appendColourLegend (svg, values, scale, text) {
   var g = svg.append('g').attr('transform', 'translate(40, 60)')
 
@@ -8,14 +19,7 @@ export function appendColourLegend (svg, values, scale, text) {
     .attr('font-weight', 'bold')
     .text(text)
 
-  var node = g.selectAll('.label')
-    .data(values)
-    .enter()
-    .append('g')
-    .attr('class', 'label')
-    .attr('transform', function (d, i) {
-      return 'translate(0,' + ((i + 1) * 10) + ')'
-    })
+  var node = bindLegends(g, values)
 
   node.append('circle')
     .attr('r', 3)
@@ -47,14 +51,7 @@ export function appendWteLegend (svg, scale, text) {
     .attr('font-weight', 'bold')
     .text(text)
 
-  var node = g.selectAll('.label')
-    .data(ticks)
-    .enter()
-    .append('g')
-    .attr('class', 'label')
-    .attr('transform', function (d, i) {
-      return 'translate(0,' + ((i + 1) * 10) + ')'
-    })
+  var node = bindLegends(g, ticks)
 
   node.append('circle')
     .attr('r', scale)
