@@ -1,3 +1,12 @@
+var appendLegendHeading = function (g, text, leftJustified) {
+  g.append('text')
+    .attr('dy', '.31em')
+    .attr('text-anchor', leftJustified ? 'start' : 'end')
+    .attr('transform', leftJustified ? 'translate(-3)' :  'translate(3)')
+    .attr('font-weight', 'bold')
+    .text(text)
+}
+
 var bindLegends = function (g, data) {
   return g.selectAll('.legend')
     .data(data)
@@ -12,12 +21,7 @@ var bindLegends = function (g, data) {
 export function appendColourLegend (svg, values, scale, text) {
   var g = svg.append('g').attr('transform', 'translate(40, 60)')
 
-  g.append('text')
-    .attr('dy', '.31em')
-    .attr('text-anchor', 'start')
-    .attr('transform', 'translate(-3)')
-    .attr('font-weight', 'bold')
-    .text(text)
+  appendLegendHeading(g, text, true)
 
   var node = bindLegends(g, values)
 
@@ -44,12 +48,7 @@ export function appendWteLegend (svg, scale, text) {
 
   var g = svg.append('g').attr('transform', 'translate(' + (+svg.attr('width') - 40) + ', 60)')
 
-  g.append('text')
-    .attr('dy', '.31em')
-    .attr('text-anchor', 'end')
-    .attr('transform', 'translate(3)')
-    .attr('font-weight', 'bold')
-    .text(text)
+  appendLegendHeading(g, text, false)
 
   var node = bindLegends(g, ticks)
 
