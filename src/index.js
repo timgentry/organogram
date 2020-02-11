@@ -24,7 +24,9 @@ export {
 
 export {
   columnCommonalityArray,
+  columnTypeArray,
   columnUniquenessArray,
   referenceColumnUniqueness,
-  reportsToColumnCommonality
+  reportsToColumnCommonality,
+  sizeColumnNumericality
 } from './utils'

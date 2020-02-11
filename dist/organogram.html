@@ -153,9 +153,10 @@
       }
 
       organogram.prepareDrop(function (json) {
-        var selectBoxIds = ['labelColumnName', 'payGradeColumnName', 'wteColumnName']
+        var selectBoxIds = ['labelColumnName', 'payGradeColumnName']
         var columns = Object.keys(json[0])
         var columnUniquenessArray = organogram.columnUniquenessArray(json)
+        var columnTypeArray = organogram.columnTypeArray(json)
 
         d3.select(`#referenceColumnName`).selectAll('option')
           .data(organogram.referenceColumnUniqueness(columnUniquenessArray))
@@ -170,6 +171,12 @@
             .append('option')
             .attr('value', d => d).text(d => d)
         })
+
+        d3.select('#wteColumnName').selectAll('option')
+          .data(organogram.sizeColumnNumericality(columnTypeArray))
+          .enter()
+          .append('option')
+          .attr('value', d => d[0]).text(d => d[0])
 
         d3.select('#organigramize').datum(json).on('click', generateOrganogram)
         d3.select('#referenceColumnName').on('change', changedReference).each(changedReference)

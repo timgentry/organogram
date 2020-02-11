@@ -1,3 +1,5 @@
+import { countBy } from 'lodash'
+
 // returns columnName and reportsTo intersection set count and total set count
 export function columnCommonalityArray (referenceFieldName, data) {
   const referenceSet = new Set(data.map(function (d) { return d[referenceFieldName] }))
@@ -14,6 +16,15 @@ export function columnCommonalityArray (referenceFieldName, data) {
     const columnSet = new Set(data.map(function (d) { return d[column] }))
 
     return [column, new Set([...columnSet].filter(x => referenceSet.has(x))).size, columnSet.size]
+  })
+}
+
+export function columnTypeArray (json) {
+  var columns = Object.keys(json[0])
+  var total_rows = json.length
+
+  return columns.map(function (column) {
+    return [column, _.countBy(json, a => typeof a[column]), total_rows]
   })
 }
 
@@ -40,6 +51,15 @@ export function reportsToColumnCommonality (array) {
   var orderedArray = array
     // .filter(a => a[1] > 0)
     .sort((a, b) => (b[1] / b[2]) - (a[1] / a[2]))
+
+  return orderedArray
+}
+
+// returns columnName for columns over mostly number-like
+export function sizeColumnNumericality (array) {
+  var orderedArray = array
+    .filter(a => Object.keys(a[1]).includes('number'))
+    .sort((a, b) => b[1]['number'] - a[1]['number'])
 
   return orderedArray
 }
