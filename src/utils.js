@@ -1,5 +1,3 @@
-import * as _ from 'lodash'
-
 // returns columnName and reportsTo intersection set count and total set count
 export function columnCommonalityArray (referenceFieldName, data) {
   const referenceSet = new Set(data.map(function (d) { return d[referenceFieldName] }))
@@ -24,7 +22,9 @@ export function columnUniquenessArray (json) {
   var totalRows = json.length
 
   return columns.map(function (column) {
-    return [column, _.uniqBy(json, column).length, totalRows]
+    const columnSet = new Set(json.map(function (d) { return d[column] }))
+
+    return [column, columnSet.size, totalRows]
   })
 }
 

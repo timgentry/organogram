@@ -35,7 +35,6 @@
     "d3": "^5.15.0",
     "d3-scale-chromatic": "^1.5.0",
     "jspdf-yworks": "^1.2.68",
-    "lodash": "^4.17.15",
     "svg2pdf.js": "^1.0.3",
     "xlsx": "^0.15.3"
   },
