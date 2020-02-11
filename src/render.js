@@ -5,7 +5,7 @@ import { bestFit, paperSizes } from './download'
 import svgRenderer from './svg'
 import link from './link'
 import { diagonal } from './diagonal'
-import { appendLegend } from './legend'
+import { appendColourLegend, appendWteLegend } from './legend'
 
 var appendNodeCircle = function (node, colourScale, sizeScale) {
   node.append('circle')
@@ -62,7 +62,8 @@ export default function (svgId, rows, payGradeColumnName, wteColumnName) {
     .domain([0, d3.max(wteValues)])
     .range([0, 3])
 
-  appendLegend(svg, payGradeValues, payGradeScale, payGradeColumnName, wteScale, wteColumnName)
+  appendColourLegend(svg, payGradeValues, payGradeScale, payGradeColumnName)
+  appendWteLegend(svg, wteScale, wteColumnName)
 
   var stratify = d3.stratify()
     .id(function (d) { return d.reference })

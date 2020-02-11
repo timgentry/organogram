@@ -1,4 +1,4 @@
-var appendColourLegend = function (svg, values, scale, text) {
+export function appendColourLegend (svg, values, scale, text) {
   var g = svg.append('g').attr('transform', 'translate(40, 60)')
 
   g.append('text')
@@ -38,7 +38,7 @@ var appendColourLegend = function (svg, values, scale, text) {
     })
 }
 
-var appendWteLegend = function (svg, scale, text) {
+export function appendWteLegend (svg, scale, text) {
   var ticks = scale.ticks(6)
   // Remove the 0 tick, we don't need it
   ticks.shift()
@@ -78,9 +78,4 @@ var appendWteLegend = function (svg, scale, text) {
     .text(function (d, i) {
       return d
     })
-}
-
-export function appendLegend (svg, colourValues, colourScale, colourText, wteScale, wteText) {
-  appendColourLegend(svg, colourValues, colourScale, colourText)
-  appendWteLegend(svg, wteScale, wteText)
 }
