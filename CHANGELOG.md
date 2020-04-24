@@ -1,4 +1,6 @@
 ## [Unreleased]
+
+## 1.4.0 / 2020-04-24
 ### Added
 * Size dropdown filtered to numerical columns
 
