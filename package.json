@@ -23,16 +23,16 @@
   },
   "homepage": "https://github.com/timgentry/organogram#readme",
   "devDependencies": {
-    "css-loader": "^3.3.2",
+    "css-loader": "^5.2.6",
     "node-sass": "^4.13.1",
     "package-preamble": "0.0.2",
     "sass-loader": "^8.0.2",
     "standard": "^14.3.1",
     "style-loader": "^1.0.2",
     "to-string-loader": "^1.1.6",
-    "webpack": "^4.41.3",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "webpack": "^5.0",
+    "webpack-cli": "^4",
+    "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
     "d3": "^5.15.0",
