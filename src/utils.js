@@ -1,9 +1,9 @@
-import { countBy } from 'lodash'
+import { concat, countBy, uniq } from 'lodash'
 
 // returns columnName and reportsTo intersection set count and total set count
 export function columnCommonalityArray (referenceFieldName, data) {
   const referenceSet = new Set(data.map(function (d) { return d[referenceFieldName] }))
-  var columns = Object.keys(data[0])
+  var columns = _.uniq(_.concat(Object.keys(data[0]), Object.keys(data[1])))
 
   // Remove reference column
   for (var i = 0; i < columns.length; i++) {

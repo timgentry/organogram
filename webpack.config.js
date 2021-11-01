@@ -2,9 +2,14 @@ var path = require('path')
 
 var config = {
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    openPage: 'organogram.html'
+    static: path.resolve(__dirname, 'dist'),
     // watchContentBase: true
+    open: {
+      app: {
+        target: 'organogram.html',
+        name: 'Google Chrome',
+      },
+    },
   },
   entry: './src/index.js',
   module: {
@@ -24,8 +29,10 @@ var config = {
     path: path.resolve(__dirname, 'dist'),
     library: 'organogram'
   },
-  node: {
-    fs: 'empty'
+  resolve: {
+    fallback: {
+      fs: false
+    }
   },
   externals: [
     {

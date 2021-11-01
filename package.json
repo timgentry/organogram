@@ -1,12 +1,12 @@
 {
   "name": "organogram",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Displays an organogram using a radial Reingold–Tilford tree",
   "main": "dist/organogram.js",
   "scripts": {
     "lint": "standard",
     "build": "webpack --mode=production",
-    "start": "webpack-dev-server --open \"Google Chrome\"",
+    "start": "webpack serve --open --mode=development",
     "watch": "webpack --watch --mode=development"
   },
   "repository": {
@@ -24,15 +24,15 @@
   "homepage": "https://github.com/timgentry/organogram#readme",
   "devDependencies": {
     "css-loader": "^5.2.6",
-    "node-sass": "^4.13.1",
     "package-preamble": "0.0.2",
+    "sass": "*",
     "sass-loader": "^8.0.2",
-    "standard": "^14.3.1",
+    "standard": "^16.0.4",
     "style-loader": "^1.0.2",
     "to-string-loader": "^1.1.6",
     "webpack": "^5.0",
     "webpack-cli": "^4",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^4.4.0"
   },
   "dependencies": {
     "d3": "^5.15.0",
@@ -40,7 +40,14 @@
     "jspdf-yworks": "^1.2.68",
     "lodash": "^4.17.21",
     "svg2pdf.js": "1.0.3",
-    "xlsx": "^0.15.3"
+    "xlsx": "^0.17.3"
+  },
+  "resolutions": {
+    "**/**/ansi-regex": "^6.0.1",
+    "**/**/ansi-styles": "^4.3.0",
+    "**/**/array-flatten": "^2.1.0",
+    "**/**/bytes": "^3.1.0",
+    "**/**/chalk": "^4.0.0"
   },
   "standard": {
     "ignore": [
