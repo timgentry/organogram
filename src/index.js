@@ -5,8 +5,8 @@ require('./skeleton.css')
 window.d3 = d3
 
 export {
-  version
-} from '../package.json'
+  default as version
+} from './version'
 
 export {
   default as prepareDrop
