@@ -40,7 +40,7 @@
     "jspdf-yworks": "^1.2.68",
     "lodash": "^4.17.21",
     "svg2pdf.js": "1.0.3",
-    "xlsx": "^0.17.3"
+    "xlsx": "^0.18.5"
   },
   "resolutions": {
     "**/**/ansi-regex": "^6.0.1",
