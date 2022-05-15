@@ -30,7 +30,7 @@
     "standard": "^16.0.4",
     "style-loader": "^1.0.2",
     "to-string-loader": "^1.1.6",
-    "webpack": "^5.0",
+    "webpack": "^5.72",
     "webpack-cli": "^4",
     "webpack-dev-server": "^4.4.0"
   },
