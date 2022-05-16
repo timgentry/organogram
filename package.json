@@ -1,6 +1,6 @@
 {
   "name": "organogram",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Displays an organogram using a radial Reingold–Tilford tree",
   "main": "dist/organogram.js",
   "scripts": {
