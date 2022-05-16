@@ -1,5 +1,6 @@
 import * as d3 from 'd3'
 import { schemeCategory10 } from 'd3-scale-chromatic'
+import { uniq } from 'lodash'
 
 import { bestFit, paperSizes } from './download'
 import svgRenderer from './svg'
@@ -67,19 +68,19 @@ export default function (svgId, rows, payGradeColumnName, wteColumnName) {
     .id(function (d) { return d.reference })
     .parentId(function (d) { return d.report_to })
 
-  // Look for orphaned rows
+  // Look for rows where the report_to is not in the data
   var ids = rows.map(function (d) {
     return d.reference
   })
-  var unknownParents = rows.filter(function (d) {
+  var missingLineManagers = rows.filter(function (d) {
     return !ids.includes(d.report_to) && d.report_to != ''
-  }).map(function (d) {
-    return d.reference
   })
-  if (unknownParents.length !== 1) {
-    throw new Error('Unknown parents for Reference Ids: ' + unknownParents.join(', '))
+  var missingLineManagerReferences = missingLineManagers.map(d => d.reference)
+  var missingLineManagerParentIds = _.uniq(missingLineManagers.map(d => d.report_to))
+  if (missingLineManagers.length !== 1) {
+    throw new Error('Missing line mangers: ' + missingLineManagerParentIds.join(', '))
   }
-  var root_row = rows.find(d => d.reference === unknownParents[0])
+  var root_row = rows.find(d => d.reference === missingLineManagerReferences[0])
   root_row.report_to = ''
 
   var root = tree(stratify(rows))
