@@ -23,13 +23,13 @@
   },
   "homepage": "https://github.com/timgentry/organogram#readme",
   "devDependencies": {
-    "css-loader": "^5.2.6",
+    "css-loader": "^6.7.1",
     "package-preamble": "0.0.2",
     "sass": "*",
     "sass-loader": "^13.1.0",
     "standard": "^17.0.0",
-    "style-loader": "^1.0.2",
-    "to-string-loader": "^1.1.6",
+    "style-loader": "^3.3.1",
+    "to-string-loader": "^1.2.0",
     "webpack": "^5.72",
     "webpack-cli": "^4",
     "webpack-dev-server": "^4.4.0"
@@ -47,7 +47,8 @@
     "**/**/ansi-styles": "^4.3.0",
     "**/**/array-flatten": "^2.1.0",
     "**/**/bytes": "^3.1.0",
-    "**/**/chalk": "^4.0.0"
+    "**/**/chalk": "^4.0.0",
+    "**/**/loader-utils": "^2.0.3"
   },
   "standard": {
     "ignore": [
