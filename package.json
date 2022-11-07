@@ -27,7 +27,7 @@
     "package-preamble": "0.0.2",
     "sass": "*",
     "sass-loader": "^8.0.2",
-    "standard": "^16.0.4",
+    "standard": "^17.0.0",
     "style-loader": "^1.0.2",
     "to-string-loader": "^1.1.6",
     "webpack": "^5.72",
